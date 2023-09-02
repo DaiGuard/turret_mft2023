@@ -1,0 +1,16 @@
+{
+    "name": "HID",
+    "version": "0.0.1",
+    "description": "Human interface device library",
+    "keywords": "HID",
+    "authors": [
+        {
+            "name": "DaiGuard",
+            "email": "zenith.or.w@gmail.com",
+            "url": "https://github.com/DaiGuard",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "platforms": "Arduino"
+}

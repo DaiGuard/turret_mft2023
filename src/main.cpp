@@ -4,6 +4,8 @@
 #include <IRutils.h>
 #include <PS4Controller.h>
 
+#include <HID.h>
+
 #define ILLUMI_PIN 27
 #define ILLUMI_NUMPIXELS 11
 Adafruit_NeoPixel illumi = 
