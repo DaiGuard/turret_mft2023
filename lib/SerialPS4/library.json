@@ -1,0 +1,16 @@
+{
+    "name": "SerialPS4",
+    "version": "0.0.1",
+    "description": "Library to receive PS4 instructions via serial communication",
+    "keywords": "HID",
+    "authors": [
+        {
+            "name": "Motono",
+            "email": "amdaru3@gmail.com",
+            "url": "https://github.com/DaiGuard",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "platforms": "Arduino"
+}
