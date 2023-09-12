@@ -1,0 +1,20 @@
+{
+    "name": "BluetoothPS4",
+    "version": "0.0.1",
+    "description": "Bluetooth PS4 Controller library",
+    "keywwords": "HID, PS4, Bluetooth",
+    "authors": [
+        {
+            "name": "DaiGuard",
+            "email": "zenith.or.w@gmail.com",
+            "uri": "https://github.com/DaiGuard",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "platforms": "Arduino",
+    "dependencies": {
+        "HID": "0.0.1",
+        "pablomarquez76/PS4_Controller_Host": "^1.0.6"
+    }
+}
