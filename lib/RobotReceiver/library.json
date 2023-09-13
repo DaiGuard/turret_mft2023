@@ -1,0 +1,16 @@
+{
+    "name": "RobotReceiver",
+    "version": "0.0.1",
+    "description": "Robot Serial for receve commands",
+    "keywords": "Serial",
+    "authors": [
+        {
+            "name": "motono-a",
+            "email": "amdaru3@gmail.com",
+            "url": "https://github.com/DaiGuard",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "platforms": "Arduino"
+}

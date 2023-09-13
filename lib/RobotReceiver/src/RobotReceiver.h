@@ -1,0 +1,42 @@
+#ifndef __ROBOT_RECEIVER_H__
+#define __ROBOT_RECEIVER_H__
+#include "Arduino.h"
+
+typedef struct {
+    float fb;
+    float lr;
+    float turn;
+
+    bool up;
+    bool right;
+    bool down;
+    bool left;
+
+    bool square;
+    bool cross;
+    bool circle;
+    bool triangle;
+    
+    bool l1;
+    bool r1;
+    bool l2;
+    bool r2;    
+} command_t;
+
+
+class RobotReceiver
+{
+private:
+    /* data */
+    float cmd2float(uint8_t *data, int index);
+    int refrect(int x, int bits);
+    unsigned short crc16(uint8_t const *data, int data_num, int poly, int init, bool refin, bool refout, int xorout);
+
+public:
+    RobotReceiver();
+    bool update();
+
+    command_t commands;
+};
+
+#endif
