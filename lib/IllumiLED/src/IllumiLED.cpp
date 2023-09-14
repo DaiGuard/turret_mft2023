@@ -7,7 +7,7 @@ IllumiLED::IllumiLED(uint16_t n, int16_t p, neoPixelType t)
 {
     _led_num = n;
     _last_time = 0lu;
-    _pattern = IllumiPatter::WAITCONNECT;
+    _pattern = IllumiPattern::WAITCONNECT;
     _brightness = 0;
 }
 
@@ -32,7 +32,7 @@ void IllumiLED::update()
 
     switch(_pattern)
     {
-        case IllumiPatter::WAITCONNECT:            
+        case IllumiPattern::WAITCONNECT:            
             if(dt < 1500)
             {
                 rate = (float)dt / 1500.0f;
@@ -51,7 +51,7 @@ void IllumiLED::update()
                     Adafruit_NeoPixel::Color(30, 30, 230));
             }
             break;
-        case IllumiPatter::BOOTING:
+        case IllumiPattern::BOOTING:
             Adafruit_NeoPixel::setBrightness(80);
             if(dt < 800)
             {                
@@ -100,11 +100,11 @@ void IllumiLED::update()
 
                 if(_count >= 3)
                 {
-                    _pattern = IllumiPatter::IDLING;
+                    _pattern = IllumiPattern::IDLING;
                 }
             }
             break;
-        case IllumiPatter::IDLING:            
+        case IllumiPattern::IDLING:            
             Adafruit_NeoPixel::setBrightness(30);
             for(int i=0; i<_led_num; i++)
             {
@@ -112,7 +112,7 @@ void IllumiLED::update()
                     Adafruit_NeoPixel::Color(50, 255, 50));
             }
             break;
-        case IllumiPatter::DAMAGING:
+        case IllumiPattern::DAMAGING:
             Adafruit_NeoPixel::setBrightness(100);
             if(dt < 50)
             {
@@ -137,11 +137,11 @@ void IllumiLED::update()
 
                 if(_count > 5)
                 {
-                    _pattern = IllumiPatter::IDLING;
+                    _pattern = IllumiPattern::IDLING;
                 }
             }
             break;
-        case IllumiPatter::FIRING:
+        case IllumiPattern::FIRING:
             Adafruit_NeoPixel::clear();            
             if(dt < 200)
             {
@@ -165,10 +165,10 @@ void IllumiLED::update()
             else
             {
                 _last_time = start_time;
-                _pattern = IDLING;
+                _pattern = IllumiPattern::IDLING;
             }
             break;
-        case IllumiPatter::DOWN:
+        case IllumiPattern::DOWN:
             Adafruit_NeoPixel::clear();
             Adafruit_NeoPixel::setBrightness(30);
             for(int i=0; i<_led_num; i++){
@@ -182,7 +182,7 @@ void IllumiLED::update()
 }
 
 
-void IllumiLED::switchLightingPattern(int pattern)
+void IllumiLED::switchLightingPattern(IllumiPattern pattern)
 {
     _pattern = pattern;
     _last_time = millis();
