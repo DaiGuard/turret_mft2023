@@ -12,5 +12,11 @@
         }
     ],
     "license": "MIT",
-    "platforms": "Arduino"
+    "platforms": "Arduino",
+
+    "dependencies": {
+        "HID": "0.0.1",
+        "RobTillaart/CRC": "^1.0.1"
+    }
+
 }

@@ -29,8 +29,7 @@ class RobotReceiver
 private:
     /* data */
     float cmd2float(uint8_t *data, int index);
-    int refrect(int x, int bits);
-    unsigned short crc16(uint8_t const *data, int data_num, int poly, int init, bool refin, bool refout, int xorout);
+    
 
 public:
     RobotReceiver();

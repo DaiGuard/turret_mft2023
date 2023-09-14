@@ -1,21 +1,20 @@
 #include "RobotReceiver.h"
+#include "CRC.h"
 
 RobotReceiver::RobotReceiver()
 {
-
 }
 bool RobotReceiver::update()
 {
     if (!Serial.available()) return false;
 
     //フォーマット
-    //28バイト＝スティック値(4)x6 +  ボタン(2) + CRC16(2)
-    uint8_t buf[28];
-    Serial.readBytes(buf, 28);
+    //16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2)
+    uint8_t buf[16];
+    Serial.readBytes(buf, 16);
 
     //CRC16チェック
-    if(crc16(buf, 28, 0x8005, 0x0000,  true, true, 0x0000) != 0){return false;}
-
+    if(calcCRC16(buf, 16, 0x8005, 0x0000, 0x0000, true, true) != 0){return false;}
 
     //値代入
     commands.fb = cmd2float(buf,0);
@@ -46,44 +45,4 @@ float RobotReceiver::cmd2float(uint8_t *data, int index)
         cmd[i]=data[index+i];
     }
     return *(float*)cmd;
-}
-
-int RobotReceiver::refrect(int x, int bits)
-{
-    int r = 0;
-    for(int i=0;i<bits;i++)
-    {
-        r = (r << 1) | ((x>>1) & 1);
-    }
-    return r;
-}
-
-unsigned short RobotReceiver::crc16(uint8_t const *data, int data_num, int poly, int init, bool refin, bool refout, int xorout)
-{
-    if(refin)
-    {
-        init = refrect(init, 16);
-    }
-
-    for(int i=0;i<data_num;i++)
-    {
-        init ^= refin ? refrect(data[i],8) : data[i] << 8;
-        for(int j=0;j<8;j++)
-        {
-            if(init & 0x8000)
-            {
-                init = ((init << 1)^poly) & 0xffff;
-            }else
-            {
-                (init = init  << 1) & 0xffff;
-            }
-        }
-    }
-
-    if(refin)
-    {
-        init = refrect(init, 16);
-    }
-    return init ^ xorout;
-
 }
