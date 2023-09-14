@@ -20,6 +20,8 @@ class FireControl:
         int damage();
 
     private:
+        int _send_pin;
+        int _recv_pin;
         int _no;
         
         const uint16_t _DATA_HIGH;

@@ -6,21 +6,9 @@
 FireControl::FireControl(int send_pin, int recv_pin, uint8_t no)
     : IRsend(send_pin), IRrecv(recv_pin), _DATA_HIGH(1650), _DATA_LOW(550)
 {
+    _send_pin = send_pin;
+    _recv_pin = recv_pin;
     _no = no;
-
-    // uint8_t key = 0xa5;
-    // for(int i=0; i<8; i++)
-    // {
-    //     if((key & 0x80) > 0)
-    //     {
-    //         _rawData[i*2+0+3] = _DATA_HIGH;
-    //     }
-    //     else{
-    //         _rawData[i*2+0+3] = _DATA_LOW;            
-    //     }
-    //     _rawData[i*2+1+3] = 650;
-    //     key = key << 1;
-    // }
 
     for(int i=0; i<8; i++)
     {
@@ -40,6 +28,7 @@ FireControl::FireControl(int send_pin, int recv_pin, uint8_t no)
 
 bool FireControl::begin()
 {
+    pinMode(_send_pin, OUTPUT);
     IRsend::begin();
     IRrecv::enableIRIn();
 
