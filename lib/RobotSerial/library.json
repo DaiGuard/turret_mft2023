@@ -1,7 +1,7 @@
 {
-    "name": "RobotReceiver",
+    "name": "RobotSerial",
     "version": "0.0.1",
-    "description": "Robot Serial for receve commands",
+    "description": "Robot Serial for send commands",
     "keywords": "Serial",
     "authors": [
         {
