@@ -2,17 +2,27 @@
 #define __ROBOT_SERIAL_H__
 #include "Arduino.h"
 
+typedef struct
+{
+   float direct[3];
+   bool buttons[12];
+   uint16_t crc16;
+}control_val;
+
+typedef union {
+  control_val val;
+  uint8_t binary[16];
+} control_cmd;
+
 
 class RobotSerial
 {
 private:
     /* data */
-    // float cmd2float(uint8_t *data, int index);
     
-
 public:
     RobotSerial(){};
-    void control(float* direct, bool* buttons);
+    void control(control_cmd cmd);
 
 };
 
