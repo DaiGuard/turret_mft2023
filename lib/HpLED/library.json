@@ -1,0 +1,19 @@
+{
+    "name": "HpLED",
+    "version": "0.0.1",
+    "description": "HP status LED tape controller",
+    "keywwords": "LED",
+    "authors": [
+        {
+            "name": "DaiGuard",
+            "email": "zenith.or.w@gmail.com",
+            "uri": "https://github.com/DaiGuard",
+            "maintainer": true
+        }
+    ],
+    "license": "MIT",
+    "platforms": "Arduino",
+    "dependencies": {        
+        "adafruit/Adafruit NeoPixel": "^1.11.0"
+    }
+}
