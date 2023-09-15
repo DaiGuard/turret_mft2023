@@ -13,9 +13,9 @@ void setup()
     cmd.val.direct[0]=1.0;
     cmd.val.direct[1]=2.0;
     cmd.val.direct[2]=3.0;
-    for(int i=0;i<12;i++)
+    for(int i=0;i<2;i++)
     {
-      cmd.val.buttons[i]=true;
+      cmd.val.buttons[i]=0xff;
     }
     cmd.val.crc16 = 0;
 

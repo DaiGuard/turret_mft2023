@@ -5,7 +5,7 @@
 typedef struct
 {
    float direct[3];
-   bool buttons[12];
+   uint8_t buttons[2];
    uint16_t crc16;
 }control_val;
 
