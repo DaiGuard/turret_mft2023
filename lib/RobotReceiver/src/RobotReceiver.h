@@ -1,6 +1,7 @@
 #ifndef __ROBOT_RECEIVER_H__
 #define __ROBOT_RECEIVER_H__
 #include "Arduino.h"
+#include <HardwareSerial.h>
 
 typedef struct {
     float fb;
@@ -29,10 +30,10 @@ class RobotReceiver
 private:
     /* data */
     float cmd2float(uint8_t *data, int index);
-    
+    HardwareSerial& _serial;    
 
 public:
-    RobotReceiver();
+    RobotReceiver(HardwareSerial& serial): _serial(serial){};
     bool update();
 
     command_t commands;

@@ -1,19 +1,15 @@
 #include "RobotReceiver.h"
 #include "CRC.h"
 
-RobotReceiver::RobotReceiver()
-{
-}
 bool RobotReceiver::update()
 {
-    if (!Serial.available()) return false;
+    if (!_serial.available()) return false;
 
     //フォーマット
     //16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2)
     uint8_t buf[16];
-    Serial.readBytes(buf, 16);
+    _serial.readBytes(buf, 16);
 
-    //CRC16チェック
     if(calcCRC16(buf, 16, 0x8005, 0x0000, 0x0000, true, true) != 0){return false;}
 
     //値代入
