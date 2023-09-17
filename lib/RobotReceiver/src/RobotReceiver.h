@@ -30,10 +30,10 @@ class RobotReceiver
 private:
     /* data */
     float cmd2float(uint8_t *data, int index);
-    HardwareSerial& _serial;    
+    Stream& _serial;    
 
 public:
-    RobotReceiver(HardwareSerial& serial): _serial(serial){};
+    RobotReceiver(Stream& serial): _serial(serial){};
     bool update();
 
     command_t commands;
