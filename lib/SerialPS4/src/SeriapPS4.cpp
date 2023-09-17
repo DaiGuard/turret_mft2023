@@ -1,13 +1,28 @@
-#include "SerialPS4.h"
-#include "Arduino.h"
+#include <Arduino.h>
 
+#include "SerialPS4.h"
+
+
+bool SerialPS4::begin()
+{
+  _serial = &Serial;
+  
+  return true;
+}
+
+bool SerialPS4::begin(HardwareSerial *serial)
+{
+  _serial = serial;
+
+  return true;
+}
 
 void SerialPS4::read()
 {
   if(Serial.available())
   {
     //文字列読込
-    String data = Serial.readStringUntil('\n');//1,1,....,100.0(ボタン割り当て分の数値(,区切り))
+    String data = _serial->readStringUntil('\n');//1,1,....,100.0(ボタン割り当て分の数値(,区切り))
 
 
     //文字列分解

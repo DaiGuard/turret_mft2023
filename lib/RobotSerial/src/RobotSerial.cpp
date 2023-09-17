@@ -1,6 +1,14 @@
 #include "RobotSerial.h"
 #include "CRC.h"
 
+
+bool RobotSerial::begin(HardwareSerial* serial)
+{
+    _serial = serial;
+
+    return true;
+}
+
 void RobotSerial::control(control_cmd cmd)
 {
     //CRC16生成
@@ -9,6 +17,6 @@ void RobotSerial::control(control_cmd cmd)
     cmd.val.crc16 = crc;
 
     //送信用データ(16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2))
-    Serial.write(cmd.binary, 16);
+    _serial->write(cmd.binary, 16);
 
 }

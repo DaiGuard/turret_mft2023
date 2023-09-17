@@ -7,8 +7,8 @@
 class BluetoothPS4: public HID
 {
     public:
-        BluetoothPS4(): HID(){};
-        ~BluetoothPS4(){};
+        BluetoothPS4(): HID(){}
+        ~BluetoothPS4(){}
 
     bool begin();
     bool isConnected();    
