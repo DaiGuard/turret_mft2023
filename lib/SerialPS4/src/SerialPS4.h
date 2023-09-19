@@ -4,6 +4,8 @@
 #include <HID.h>
 
 
+class HardwareSerial;
+
 class SerialPS4 : public HID
 {
 private:
