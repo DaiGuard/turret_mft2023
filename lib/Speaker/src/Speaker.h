@@ -2,6 +2,9 @@
 #define __SPEAKER_H__
 
 
+#include <stdint.h>
+
+
 enum class SoundPattern
 {
     NONE = 0x00,
