@@ -3,9 +3,9 @@
 
 
 #include <stdint.h>
+#include <HardwareSerial.h>
 
 
-class HardwareSerial;
 
 typedef struct
 {
@@ -23,12 +23,14 @@ typedef union {
 class RobotSerial
 {
 private:
+    const uint8_t SerialHeader;
+    const uint8_t SerialEnd;
     HardwareSerial* _serial;
     
 public:
-    RobotSerial(){}
+    RobotSerial();
     bool begin(HardwareSerial* serial);
-    void control(control_cmd cmd);
+    void control(float *vec, uint16_t buttons);
 
 };
 

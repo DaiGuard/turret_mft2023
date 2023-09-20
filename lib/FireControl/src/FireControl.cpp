@@ -96,7 +96,7 @@ int FireControl::damage()
 
         uint8_t recv_no = (uint8_t)(value & 0x00ff);
         uint8_t key = (uint8_t)((value >> 8) & 0x00ff);
-        
+
         if(_no != recv_no && key == 0xa5){
             data = 25;
         }

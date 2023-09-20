@@ -78,9 +78,9 @@ void setup()
     // スピーカ開始
     SUCCESS_CHK(speaker.begin(), "can not start speaker");
 
-    // // ロボット通信用シリアルの初期化
-    // Serial2.begin(115200);
-    // SUCCESS_CHK(robotSerial.begin(&Serial2), "can not start robot serial");
+    // ロボット通信用シリアルの初期化
+    Serial2.begin(115200);
+    SUCCESS_CHK(robotSerial.begin(&Serial2), "can not start robot serial");
 
     // Core0用スレッドを実行開始
     // disableCore0WDT();
@@ -103,6 +103,7 @@ void loop()
     BaseType_t result;
     uint32_t soundType;
     uint32_t illumiType;
+    control_cmd command;
 
     // イベントリスト
     uint32_t events = (uint32_t)TurretEvent::EVENT_NONE;
@@ -115,6 +116,7 @@ void loop()
 
     // 目標速度
     float vec[3] = {0.0f, 0.0f, 0.0f};  // vx, vy, rz
+    uint16_t buttons;
     bool fireSignal = false;
     bool resetSignal = false;
 
@@ -155,9 +157,23 @@ void loop()
                 // 発砲指示
                 fireSignal = ps4->button.cross > 0 ? true: false;
 
-                vec[0] = ps4->analog.stick.ly / 127.0f;
+                vec[0] = - ps4->analog.stick.ly / 127.0f;
                 vec[1] = ps4->analog.stick.lx / 127.0f;
                 vec[2] = ps4->analog.stick.rx / 127.0f;
+
+                buttons = 0x0000;
+                buttons |= ps4->button.up > 0       ? 0x0001 : 0x0000;
+                buttons |= ps4->button.right > 0    ? 0x0002 : 0x0000;
+                buttons |= ps4->button.down > 0     ? 0x0004 : 0x0000;
+                buttons |= ps4->button.left > 0     ? 0x0008 : 0x0000;
+                buttons |= ps4->button.square > 0   ? 0x0010 : 0x0000;
+                buttons |= ps4->button.cross > 0    ? 0x0020 : 0x0000;
+                buttons |= ps4->button.circle > 0   ? 0x0040 : 0x0000;
+                buttons |= ps4->button.triangle > 0 ? 0x0080 : 0x0000;
+                buttons |= ps4->button.l1 > 0       ? 0x0100 : 0x0000;
+                buttons |= ps4->button.r1 > 0       ? 0x0200 : 0x0000;
+                buttons |= ps4->button.l2 > 0       ? 0x0400 : 0x0000;
+                buttons |= ps4->button.r2 > 0       ? 0x0800 : 0x0000;
 
                 // 各動作指示                
                 switch(currentState)
@@ -170,6 +186,9 @@ void loop()
                         robotHP = 100;                        
                         break;
                     case TurretState::INOPERATION_ACTIVE:
+                        // ロボットへコマンド送信
+                        robotSerial.control(vec, buttons);
+
                         // ダメージ確認
                         damege = fire_control.damage();                        
                         if(damege > 0)
