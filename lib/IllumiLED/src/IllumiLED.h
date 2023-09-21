@@ -5,14 +5,15 @@
 #include <Adafruit_NeoPixel.h>
 
 
-enum IllumiPatter
+enum class IllumiPattern
 {
-    WAITCONNECT,// 接続待機
-    BOOTING,    // 起動中
-    IDLING,     // 待機中
-    DAMAGING,   // ダメージ
-    DOWN,       // 戦闘不能
-    FIRING,     // 発射中
+    NONE        = 0x00,
+    WAITCONNECT = 0x01, // 接続待機
+    BOOTING     = 0x02, // 起動中
+    IDLING      = 0x03, // 待機中
+    DAMAGING    = 0x04, // ダメージ
+    DOWN        = 0x05, // 戦闘不能
+    FIRING      = 0x06, // 発射中
 };
 
 
@@ -24,15 +25,15 @@ class IllumiLED: public Adafruit_NeoPixel
 
         bool begin();
         void update();
-        void switchLightingPattern(int pattern);
+        void switchLightingPattern(IllumiPattern pattern);
 
     private:
-        int         _led_num;
-        int         _pattern;
-        uint64_t    _last_time;
-        int         _count;
+        int             _led_num;
+        IllumiPattern   _pattern;
+        uint64_t        _last_time;
+        int             _count;
 
-        uint8_t     _brightness;        
+        uint8_t         _brightness;        
 };
 
 #endif

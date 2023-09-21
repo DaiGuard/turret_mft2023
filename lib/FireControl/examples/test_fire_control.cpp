@@ -18,8 +18,7 @@ void setup()
     pinMode(22, OUTPUT);
     pinMode(22, LOW);
 
-    // DRV8835 A enable pin
-    pinMode(21, OUTPUT);
+    // DRV8835 A enable pin    
     fire_control.begin();
 }
 

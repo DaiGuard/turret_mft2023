@@ -1,14 +1,39 @@
 #include "RobotSerial.h"
 #include "CRC.h"
 
-void RobotSerial::control(control_cmd cmd)
+
+RobotSerial::RobotSerial()
+    : SerialHeader(0xa5), SerialEnd(0x0a)
 {
-    //CRC16生成
-    cmd.val.crc16 = 0;
-    uint16_t crc = calcCRC16(cmd.binary, 14, 0x8005, 0x0000, 0x0000, true, true);
-    cmd.val.crc16 = crc;
+    _serial = NULL;
+}
 
-    //送信用データ(16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2))
-    Serial.write(cmd.binary, 16);
 
+bool RobotSerial::begin(HardwareSerial* serial)
+{
+    _serial = serial;
+
+    return true;
+}
+
+
+void RobotSerial::control(float* vec, uint16_t buttons)
+{
+    uint8_t buffer[18];
+
+    // header + end write
+    buffer[0] = SerialHeader;
+    buffer[17] = SerialEnd;
+
+    // float x 3 vec write
+    memcpy(buffer+1, vec, sizeof(float)*3);
+
+    // uint16_t buttons write
+    memcpy(buffer+13, &buttons, sizeof(uint16_t));
+
+    // crc write
+    uint16_t crc = calcCRC16(buffer, 14, 0x8005, 0x0000, 0x0000, true, true);
+    memcpy(buffer+15, &crc, sizeof(uint16_t));
+    
+    _serial->write(buffer, 18);
 }

@@ -1,6 +1,11 @@
 #ifndef __ROBOT_SERIAL_H__
 #define __ROBOT_SERIAL_H__
-#include "Arduino.h"
+
+
+#include <stdint.h>
+#include <HardwareSerial.h>
+
+
 
 typedef struct
 {
@@ -18,11 +23,14 @@ typedef union {
 class RobotSerial
 {
 private:
-    /* data */
+    const uint8_t SerialHeader;
+    const uint8_t SerialEnd;
+    HardwareSerial* _serial;
     
 public:
-    RobotSerial(){};
-    void control(control_cmd cmd);
+    RobotSerial();
+    bool begin(HardwareSerial* serial);
+    void control(float *vec, uint16_t buttons);
 
 };
 

@@ -1,33 +1,48 @@
 #include "RobotReceiver.h"
 #include "CRC.h"
 
+RobotReceiver::RobotReceiver()
+    : SerialHeader(0xa5), SerialEnd(0x0a)
+{
+    _serial = NULL;
+}
+
+bool RobotReceiver::begin(HardwareSerial* serial)
+{
+    _serial = serial;
+
+    return true;
+}
+
 bool RobotReceiver::update()
 {
     if (!_serial.available()) return false;
 
-    //フォーマット
-    //16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2)
-    uint8_t buf[16];
-    _serial.readBytes(buf, 16);
+    uint8_t buffer[18];
 
-    if(calcCRC16(buf, 16, 0x8005, 0x0000, 0x0000, true, true) != 0){return false;}
+    // //フォーマット
+    // //16バイト＝スティック値(4)x3方向 +  ボタン(2) + CRC16(2)
+    // uint8_t buf[16];
+    // _serial.readBytes(buf, 16);
 
-    //値代入
-    commands.fb = cmd2float(buf,0);
-    commands.lr = cmd2float(buf,4);
-    commands.turn = cmd2float(buf,8);
-    commands.up    = buf[12] & 0x01 > 0;
-    commands.right = buf[12] & 0x02 > 0;
-    commands.down  = buf[12] & 0x04 > 0;
-    commands.left  = buf[12] & 0x08 > 0;
-    commands.square   = buf[12] & 0x10 > 0;
-    commands.cross    = buf[12] & 0x20 > 0;
-    commands.circle   = buf[12] & 0x40 > 0;
-    commands.triangle = buf[12] & 0x80 > 0;
-    commands.l1  = buf[13] & 0x01 > 0;
-    commands.r1  = buf[13] & 0x02 > 0;
-    commands.l2  = buf[13] & 0x04 > 0;
-    commands.r2  = buf[13] & 0x08 > 0;
+    // if(calcCRC16(buf, 16, 0x8005, 0x0000, 0x0000, true, true) != 0){return false;}
+
+    // //値代入
+    // commands.fb = cmd2float(buf,0);
+    // commands.lr = cmd2float(buf,4);
+    // commands.turn = cmd2float(buf,8);
+    // commands.up    = buf[12] & 0x01 > 0;
+    // commands.right = buf[12] & 0x02 > 0;
+    // commands.down  = buf[12] & 0x04 > 0;
+    // commands.left  = buf[12] & 0x08 > 0;
+    // commands.square   = buf[12] & 0x10 > 0;
+    // commands.cross    = buf[12] & 0x20 > 0;
+    // commands.circle   = buf[12] & 0x40 > 0;
+    // commands.triangle = buf[12] & 0x80 > 0;
+    // commands.l1  = buf[13] & 0x01 > 0;
+    // commands.r1  = buf[13] & 0x02 > 0;
+    // commands.l2  = buf[13] & 0x04 > 0;
+    // commands.r2  = buf[13] & 0x08 > 0;
 
     return true;
 

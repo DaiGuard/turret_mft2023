@@ -23,11 +23,11 @@ void setup()
 void loop()
 {
     speaker.playSound(SoundPattern::BOOT);
-    delay(1000);
+    delay(5000);
     speaker.playSound(SoundPattern::FIRE);
-    delay(1000);
+    delay(5000);
     speaker.playSound(SoundPattern::DOWN);
-    delay(1000);
+    delay(5000);
     speaker.playSound(SoundPattern::MOVE);
-    delay(1000);
+    delay(5000);
 }
