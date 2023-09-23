@@ -26,7 +26,8 @@ SerialPS4 serialPS4;
 HID * ps4;
 
 // 銃火器
-FireControl fire_control(21, 25, 1);
+// FireControl fire_control(21, 25, 1);
+FireControl fire_control(21, 25, 2);
 
 // LED表示
 IllumiLED illumi(11, 27, NEO_GRB + NEO_KHZ800);
@@ -193,6 +194,7 @@ void loop()
                         damege = fire_control.damage();                        
                         if(damege > 0)
                         {
+                            illumi.switchLightingPattern(IllumiPattern::DAMAGING);                            
                             robotHP = (robotHP - damege) >= 0 ? robotHP - damege : 0;
                         }
 
@@ -219,6 +221,7 @@ void loop()
                         } 
                         break;
                     case TurretState::INOPERATION_DOWN:
+                        illumi.switchLightingPattern(IllumiPattern::DOWN);
                         if(resetSignal)
                         {
                             events |= (uint32_t)TurretEvent::ROBOT_RESET;
