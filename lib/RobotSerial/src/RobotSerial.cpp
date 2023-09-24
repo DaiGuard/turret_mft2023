@@ -32,7 +32,7 @@ void RobotSerial::control(float* vec, uint16_t buttons)
     memcpy(buffer+13, &buttons, sizeof(uint16_t));
 
     // crc write
-    uint16_t crc = calcCRC16(buffer, 14, 0x8005, 0x0000, 0x0000, true, true);
+    uint16_t crc = calcCRC16(buffer, 15, 0x8005, 0x0000, 0x0000, true, true);
     memcpy(buffer+15, &crc, sizeof(uint16_t));
     
     _serial->write(buffer, 18);

@@ -23,7 +23,7 @@ void setup()
 
 void loop() 
 {
-    rs.control(cmd);
+    rs.control(cmd.val.direct,0);
     
     // 待ち時間
     delay(30);
