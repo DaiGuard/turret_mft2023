@@ -1,14 +1,28 @@
 #include <Arduino.h>
+#include <SoftwareSerial.h>
 
 #include "RobotReceiver.h"
 
-RobotReceiver rr(Serial1);
+#define ESP_MODE
+
+#ifdef ESP_MODE
+EspSoftwareSerial::UART mySerial;
+#else
+SoftwareSerial mySerial(12, 11);
+#endif
+
+RobotReceiver rr(mySerial);
+
 
 void setup()
 {
     // シリアルポート初期化
     Serial.begin(115200);
-    Serial1.begin(115200,SERIAL_8N1, 22,23);
+#ifdef ESP_MODE
+    mySerial.begin(115200, EspSoftwareSerial::SWSERIAL_8N1, 22, 23);
+#else
+    mySerial.begin(115200);
+#endif
 
     //LED
     pinMode(19, OUTPUT);
