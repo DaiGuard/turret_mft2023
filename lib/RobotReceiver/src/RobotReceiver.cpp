@@ -3,42 +3,61 @@
 
 bool RobotReceiver::update()
 {
-    if (!_serial.available()) return false;
-
     //フォーマット
-    //16バイト＝ヘッダー(1)+スティック値(4)x3方向 +  ボタン(2) + CRC16(2)+フッター(1)
-    uint8_t buf[18];
+    //18バイト＝ヘッダー(1) + スティック値(4)x3方向 +  ボタン(2) + CRC16(2) + フッター(1)
 
-    buf[0] = _serial.read();
-
-    if(buf[0]!=SerialHeader) return false;
-
-
+    uint8_t buf[128];
     size_t len;
-    len = _serial.readBytesUntil(SerialEnd, buf+1, 17);
+    uint16_t recv_crc, crc;    
 
-    if(len != 16) return false;
+    while(_serial.available())
+    {
+        int header = _serial.read();
+        if(header != SerialHeader)
+        {
+            Serial.println("non header");
+            continue;
+        }
+        buf[0] = (uint8_t)header;
 
-    if(calcCRC16(buf, 17, 0x8005, 0x0000, 0x0000, true, true) != 0){return false;}
+        len = _serial.readBytesUntil(SerialEnd, buf+1, 127);
+        if(len != 16)
+        {
+            Serial.println("no data lenght");
+            continue;
+        }
 
-   //値代入
-   commands.fb = cmd2float(buf,1);
-   commands.lr = cmd2float(buf,5);
-   commands.turn = cmd2float(buf,9);
-   commands.up    = buf[13] & 0x01 > 0;
-   commands.right = buf[13] & 0x02 > 0;
-   commands.down  = buf[13] & 0x04 > 0;
-   commands.left  = buf[13] & 0x08 > 0;
-   commands.square   = buf[13] & 0x10 > 0;
-   commands.cross    = buf[13] & 0x20 > 0;
-   commands.circle   = buf[13] & 0x40 > 0;
-   commands.triangle = buf[13] & 0x80 > 0;
-   commands.l1  = buf[14] & 0x01 > 0;
-   commands.r1  = buf[14] & 0x02 > 0;
-   commands.l2  = buf[14] & 0x04 > 0;
-   commands.r2  = buf[14] & 0x08 > 0;
+        memcpy(&recv_crc, buf+15, sizeof(uint16_t));
 
-    return true;
+        crc = calcCRC16(buf, 15, 0x8005, 0x0000, 0x0000, true, true);
+
+        if(recv_crc != crc)
+        {
+            Serial.println("no crc");
+            continue;
+        }
+
+        //値代入
+        commands.fb = cmd2float(buf,1);
+        commands.lr = cmd2float(buf,5);
+        commands.turn = cmd2float(buf,9);
+        commands.up    = (buf[13] & 0x01) > 0;
+        commands.right = (buf[13] & 0x02) > 0;
+        commands.down  = (buf[13] & 0x04) > 0;
+        commands.left  = (buf[13] & 0x08) > 0;
+        commands.square   = (buf[13] & 0x10) > 0;
+        commands.cross    = (buf[13] & 0x20) > 0;
+        commands.circle   = (buf[13] & 0x40) > 0;
+        commands.triangle = (buf[13] & 0x80) > 0;
+        commands.l1  = (buf[14] & 0x01) > 0;
+        commands.r1  = (buf[14] & 0x02) > 0;
+        commands.l2  = (buf[14] & 0x04) > 0;
+        commands.r2  = (buf[14] & 0x08) > 0;
+
+        return true;        
+    }
+
+    return false;
 
 }
 

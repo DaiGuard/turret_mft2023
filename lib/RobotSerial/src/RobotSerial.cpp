@@ -35,5 +35,8 @@ void RobotSerial::control(float* vec, uint16_t buttons)
     uint16_t crc = calcCRC16(buffer, 15, 0x8005, 0x0000, 0x0000, true, true);
     memcpy(buffer+15, &crc, sizeof(uint16_t));
     
-    _serial->write(buffer, 18);
+    if(_serial->availableForWrite() >= 18)
+    {
+        _serial->write(buffer, 18);
+    }
 }
