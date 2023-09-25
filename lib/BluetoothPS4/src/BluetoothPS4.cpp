@@ -11,6 +11,8 @@ bool BluetoothPS4::begin()
     sprintf(bt_mac_str, "%02x:%02x:%02x:%02x:%02x:%02x",
         bt_mac[0], bt_mac[1], bt_mac[2], bt_mac[3], bt_mac[4], bt_mac[5]);
     
+    // Serial.println(bt_mac_str);
+
     return PS4.begin(bt_mac_str);
 }
 

@@ -26,8 +26,10 @@ SerialPS4 serialPS4;
 HID * ps4;
 
 // 銃火器
-FireControl fire_control(21, 25, 1);
+// FireControl fire_control(21, 25, 1);
 // FireControl fire_control(21, 25, 2);
+// FireControl fire_control(21, 25, 3);
+FireControl fire_control(21, 25, 4);
 
 // LED表示
 IllumiLED illumi(11, 27, NEO_GRB + NEO_KHZ800);
